@@ -1,0 +1,65 @@
+<!-- templates/base.html -->
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}SPK Produksi Ikan Hias{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- DataTables CSS + jQuery -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(135deg,#ffd1eb,#ff9ac8);
+      margin:0; color:#333;
+    }
+    header {
+      background: linear-gradient(90deg,#ff69b4,#ff85c1);
+      padding:12px 16px; color:white;
+      box-shadow:0 4px 12px rgba(214,51,132,0.12);
+    }
+    header .inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
+    nav a { color:white; text-decoration:none; margin-left:12px; padding:8px 14px; border-radius:8px; font-weight:600;
+            background:linear-gradient(135deg,#ff69b4,#d63384); box-shadow:0 3px 8px rgba(0,0,0,0.12); }
+    nav a:hover { transform:translateY(-2px); box-shadow:0 6px 14px rgba(0,0,0,0.18); }
+    main { max-width:1100px; margin:26px auto; padding:18px; }
+    footer { text-align:center; padding:12px; color:white; background:#ffb6c1; margin-top:26px; }
+    .flash { padding:10px; border-radius:8px; margin-bottom:12px; }
+    .flash.success { background:#e9fff6; color:#0a7; }
+    .flash.error { background:#ffecec; color:#a00; }
+
+    .card { background:white; padding:18px; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.06); }
+    .btn { padding:10px 14px; border-radius:8px; border:none; cursor:pointer; }
+    .hidden { display:none; }
+  </style>
+</head>
+<body>
+<header>
+  <div class="inner">
+    <div style="font-weight:700; font-size:1.1rem;">🌸 SPK: Kinerja Produksi Ikan Hias (SAW + TOPSIS)</div>
+    <nav>
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('index') }}">Filter</a>
+      <a href="{{ url_for('results') }}">Peringkat</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for cat,msg in messages %}
+        <div class="flash {{ cat }}">{{ msg }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+
+<footer>&copy; 2025 SPK Produksi Ikan Hias — Hybrid SAW + TOPSIS</footer>
+</body>
+</html>
