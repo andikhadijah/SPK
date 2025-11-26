@@ -1,0 +1,53 @@
+<!-- templates/index.html -->
+{% extends 'base.html' %}
+{% block title %}Pilih Provinsi & Bobot{% endblock %}
+{% block content %}
+
+<div class="card">
+  <h2 style="color:#d63384;">Pilih Provinsi & Tentukan Bobot</h2>
+  <p style="color:#555;">
+    Pilih satu atau lebih provinsi. Jika ingin semua, centang "Pilih Semua Provinsi".
+  </p>
+
+  <form method="post" action="{{ url_for('compute') }}">
+
+    <label style="display:block; margin-bottom:12px;">
+      <input type="checkbox" id="selectAll" style="margin-right:6px;">
+      <strong>Pilih Semua Provinsi</strong>
+    </label>
+
+    <div id="provinceList"
+         style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:20px;">
+      {% for p in prov_list %}
+      <label style="padding:8px; background:#ffe4f2; border-radius:8px; display:flex; align-items:center;">
+        <input type="checkbox" name="provinsi" value="{{ p }}" class="provCheck" style="margin-right:8px;">
+        <span style="font-weight:600;">{{ p }}</span>
+      </label>
+      {% endfor %}
+    </div>
+
+    <h3 style="color:#d63384;">Bobot Kriteria (jumlah harus = 1)</h3>
+    <p style="color:#555;">Masukkan angka desimal, mis. 0.4, 0.4, 0.2</p>
+
+    <div style="display:flex; gap:12px; align-items:center; margin-bottom:12px;">
+      <label>Volume (C1): <input type="number" step="0.01" name="w1" value="{{ weights[0] }}" style="width:100px; margin-left:6px;"></label>
+      <label>Nilai (C2): <input type="number" step="0.01" name="w2" value="{{ weights[1] }}" style="width:100px; margin-left:6px;"></label>
+      <label>Harga  (C3): <input type="number" step="0.01" name="w3" value="{{ weights[2] }}" style="width:100px; margin-left:6px;"></label>
+    </div>
+
+    <div style="display:flex; gap:12px;">
+      <button type="submit" class="btn" style="background:#ff69b4; color:white;">Lanjutkan Perhitungan</button>
+      <a href="{{ url_for('dashboard') }}" class="btn" style="background:#ffd1e8; color:#d63384;">Kembali</a>
+    </div>
+  </form>
+</div>
+
+<script>
+// Select All Function
+document.getElementById('selectAll').addEventListener('change', function(){
+  const checks = document.querySelectorAll('.provCheck');
+  checks.forEach(c => c.checked = this.checked);
+});
+</script>
+
+{% endblock %}
