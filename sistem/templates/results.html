@@ -1,0 +1,63 @@
+<!-- templates/results.html -->
+{% extends 'base.html' %}
+{% block title %}Peringkat{% endblock %}
+{% block content %}
+
+<div class="card">
+  <h2 style="color:#d63384;">Peringkat Kinerja Produksi Ikan Hias — {{ provinsi }}</h2>
+
+  <div style="margin-top:12px;">
+    <table id="rankTable" class="display" style="width:100%;">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Produksi</th>
+          <th>Provinsi</th>
+          <th>Volume (Ekor)</th>
+          <th>Nilai (Rp. Juta)</th>
+          <th>Harga (Rp/Ekor)</th>
+          <th>SAW</th>
+          <th>TOPSIS</th>
+          <th>Composite</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for it in items %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ it.produksi }}</td>
+          <td>{{ it.provinsi }}</td>
+          <td>{{ "{:,.0f}".format(it.volume) }}</td>
+          <td>{{ "{:,.0f}".format(it.nilai) }}</td>
+          <td>{{ "{:,.0f}".format(it.harga) }}</td>
+          <td>{{ "{:.4f}".format(it.saw_score) }}</td>
+          <td>{{ "{:.4f}".format(it.topsis_score) }}</td>
+          <td style="font-weight:700;">{{ "{:.4f}".format(it.composite) }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="9" style="text-align:center;">Tidak ada data untuk provinsi terpilih.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top:12px;">
+    <form method="post" action="{{ url_for('recompute') }}">
+      <button type="submit" class="btn" style="background:#ff69b4; color:white;">Recompute (gunakan bobot saat ini)</button>
+      <a href="{{ url_for('index') }}" class="btn" style="background:#ffd1e8; color:#d63384;">Ubah Filter / Bobot</a>
+    </form>
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+  $('#rankTable').DataTable({
+    pageLength: 10,
+    lengthMenu: [5,10,25,50,100]
+  });
+});
+</script>
+
+{% endblock %}
